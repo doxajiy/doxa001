@@ -3,7 +3,7 @@ jobs:
   pnd:
     docker:
       - image: circleci/ruby:2.5.3
-    parallelism: 1
+    parallelism: 2
     steps:
       - run:
          name: Update System
